@@ -7,8 +7,14 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
+/// <summary>
+/// Assignment App.
+/// </summary>
 namespace CFAssignment.Controllers
 {
+    /// <summary>
+    /// Main controller
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class AssignmentController : ControllerBase
@@ -24,13 +30,19 @@ namespace CFAssignment.Controllers
             MysqlDB = mysqlDB;
         }
 
+        /// <summary>
+        /// To get all students from DB
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         [Route("students")]
         public async Task<IActionResult> GetStudets()
         {
             try
             {
+                _logger.LogInformation("Get API hit.");
                 var students = await MysqlDB.GetQuery();
+                _logger.LogInformation("Get API successful.");
                 return Ok(students);
             }
             catch (Exception ex)
@@ -40,16 +52,71 @@ namespace CFAssignment.Controllers
             }
         }
 
-
+        /// <summary>
+        /// To Insert a group of students in DB.
+        /// </summary>
+        /// <param name="students">List of student records</param>
+        /// <returns></returns>
         [HttpPost]
-        [Route("Update")]
-        public async Task<IActionResult> Update(List<Student> student)
+        [Route("Insert")]
+        public async Task<IActionResult> Insert(List<Student> students)
         {
             try
             {
-                int rows = await MysqlDB.InsertStudentRecord(student);
-                _logger.LogInformation($"Number of rows added successfully: {rows}");
-                return Ok($"Number of rows added: {rows}");
+                _logger.LogInformation("Insert API hit.");
+                var response = await MysqlDB.InsertStudentRecord(students);
+                _logger.LogInformation("Insert API successfull.");
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                return StatusCode(500, "Some error occured, check logs for more info.");
+            }
+        }
+
+        /// <summary>
+        /// Update a student record
+        /// </summary>
+        /// <param name="student">Student record</param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("Update")]
+        public async Task<IActionResult> Update(StudentModel student)
+        {
+            try
+            {
+                _logger.LogInformation("Update API Hit");
+                bool res = await MysqlDB.UpdateStudentRecord(student);
+                _logger.LogInformation($"Result of record update: {res}");
+                _logger.LogInformation("Update API successfull.");
+                return Ok(res);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                return StatusCode(500, "Some error occured, check logs for more info.");
+            }
+        }
+
+        /// <summary>
+        /// Delete a student record.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpDelete]
+        [Route("Delete")]
+        public async Task<IActionResult> Delete(string id)
+        {
+            try
+            {
+                _logger.LogInformation("Delete API hit.");
+                bool res = await MysqlDB.DeleteStudentRecord(id);
+                _logger.LogInformation($"Result of record delete: {res}");
+                if (res)
+                    return Ok(res);
+                else
+                    return BadRequest("Student with that Id not found.");
             }
             catch (Exception ex)
             {

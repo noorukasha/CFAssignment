@@ -1,0 +1,6 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/CFAssignment/.vs/CFAssignment/DesignTimeBuild/.dtbcache.v2
+/CFAssignment/CFAssignment/Logs/mylog-20201226.txt
