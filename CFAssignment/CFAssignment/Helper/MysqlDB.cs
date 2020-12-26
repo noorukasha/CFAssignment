@@ -128,7 +128,7 @@ namespace CFAssignment.Helper
                     command.Parameters.AddWithValue("@name", student.Name);
                     command.Parameters.AddWithValue("@class", student.ClassNumber);
                     command.Parameters.AddWithValue("@mark", student.Mark);
-                    command.Parameters.AddWithValue("@sex", student.Gender);
+                    command.Parameters.AddWithValue("@sex", student.Gender?.ToLower());
                     int rowCount = await command.ExecuteNonQueryAsync();
                     return rowCount > 0 ? true : false;
                 }

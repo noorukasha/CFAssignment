@@ -4,3 +4,6 @@
 
 /CFAssignment/.vs/CFAssignment/DesignTimeBuild/.dtbcache.v2
 /CFAssignment/CFAssignment/Logs/mylog-20201226.txt
+/CFAssignment/CFAssignment/bin/Release/netcoreapp3.1
+/CFAssignment/CFAssignment/obj/Release/netcoreapp3.1
+/CFAssignment/CFAssignment/Properties/PublishProfiles
